@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>单线程的JavaScript | 江江的个人博客</title><meta name="author" content="Jiang Jiang"><meta name="copyright" content="Jiang Jiang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="主人的任务之单线程的Javascript怎么管理任务（一）​	JavaScript是单线程还是多线程？这是我在牛客网经常刷到的问题，为了弄懂JavaScript的任务管理机制，我查阅了一些文档进行了总结： 单线程的JavaScript​	首先是JavaScript为什么是单线程？在看面经的时候，我听说别人把这种问题叫做底层问题。 ​	要怎么理解 JavaScript 是单线程这个概念呢？大概需要从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单线程的JavaScript">
+<meta property="og:url" content="http://example.com/2023/05/03/%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84JavaScript/index.html">
+<meta property="og:site_name" content="江江的个人博客">
+<meta property="og:description" content="主人的任务之单线程的Javascript怎么管理任务（一）​	JavaScript是单线程还是多线程？这是我在牛客网经常刷到的问题，为了弄懂JavaScript的任务管理机制，我查阅了一些文档进行了总结： 单线程的JavaScript​	首先是JavaScript为什么是单线程？在看面经的时候，我听说别人把这种问题叫做底层问题。 ​	要怎么理解 JavaScript 是单线程这个概念呢？大概需要从">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2023-05-03T08:15:31.000Z">
+<meta property="article:modified_time" content="2023-05-03T08:38:48.582Z">
+<meta property="article:author" content="Jiang Jiang">
+<meta property="article:tag" content="学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2023/05/03/%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84JavaScript/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '单线程的JavaScript',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-05-03 16:38:48 16:38:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="江江的个人博客"><span class="site-name">江江的个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">单线程的JavaScript</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-03T08:15:31.000Z" title="发表于 2023-05-03 16:15:31 16:15:31">2023-05-03 16:15:31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-05-03T08:38:48.582Z" title="更新于 2023-05-03 16:38:48 16:38:48">2023-05-03 16:38:48</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="单线程的JavaScript"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="主人的任务之单线程的Javascript怎么管理任务（一）"><a href="#主人的任务之单线程的Javascript怎么管理任务（一）" class="headerlink" title="主人的任务之单线程的Javascript怎么管理任务（一）"></a>主人的任务之单线程的Javascript怎么管理任务（一）</h1><p>​	JavaScript是单线程还是多线程？这是我在牛客网经常刷到的问题，为了弄懂JavaScript的任务管理机制，我查阅了一些文档进行了总结：</p>
+<h5 id="单线程的JavaScript"><a href="#单线程的JavaScript" class="headerlink" title="单线程的JavaScript"></a>单线程的JavaScript</h5><p>​	首先是JavaScript为什么是单线程？在看面经的时候，我听说别人把这种问题叫做底层问题。</p>
+<p>​	要怎么理解 JavaScript 是单线程这个概念呢？大概需要从浏览器来说起。JavaScript 最初被设计为浏览器脚本语言，主要用途包括对页面的操作、与浏览器的交互、与用户的交互、页面逻辑处理等。如果将 JavaScript 设计为多线程，那当多个线程同时对同一个 DOM 节点进行操作时，线程间的同步问题会变得很复杂。</p>
+<p>​	因此，为了<strong>避免复杂性</strong>，JavaScript <strong>被设计为单线程</strong>。</p>
+<p>​	这样一个单线程的 JavaScript，意味着任务需要一个接一个地处理。如果有一个任务是等待用户输入，那在用户进行操作前，所有其他任务都处于等待状态，页面会进入假死状态，用户体验会很糟糕。那么，为了高效进行页面的交互和渲染处理，我们围绕着任务执行是否阻塞 JavaScript 主线程，将 JavaScript 中的任务分为同步任务和异步任务。</p>
+<h5 id="任务？什么任务？xx的任务罢了"><a href="#任务？什么任务？xx的任务罢了" class="headerlink" title="任务？什么任务？xx的任务罢了"></a>任务？什么任务？xx的任务罢了</h5><p>​	对吧，这就是笔试和面试经常碰到的任务类型问题。首先作为初学者得把概念明白了。</p>
+<p>跟考研学习到的一样：</p>
+<ul>
+<li>同步任务：在主线程上排队执行的任务，前一个任务完整地执行完成后，后一个任务才会被执行</li>
+<li>异步任务：不会阻塞主线程，在其任务执行完成之后，会再根据一定的规则去执行相关的回调。</li>
+</ul>
+<p>围绕这两点，带着问题去翻阅文档以及询问强大的gpt配合食用，我们可以看到：</p>
+<h5 id="同步任务与调用任务栈"><a href="#同步任务与调用任务栈" class="headerlink" title="同步任务与调用任务栈"></a>同步任务与调用任务栈</h5><p><u>JavaScript 在执行过程中每进入一个不同的运行环境时，都会创建一个相应的执行上下文。</u></p>
+<p><strong>很好理解吧。</strong></p>
+<p>那么，当我们执行一段 JavaScript 代码时，通常会创建多个执行上下文。</p>
+<p>而 JavaScript 解释器会以栈的方式管理这些执行上下文、以及函数之间的调用关系，形成函数调用栈（call stack）</p>
+<p>（调用栈可理解为一个存储函数调用的栈结构，遵循 FILO（先进后出）的原则）</p>
+<p>注意注意，可以回顾一下栈和堆，以及它俩是干嘛用的，融合贯通嘛~</p>
+<p><strong>我们来看一下 JavaScript 中代码执行的过程：</strong></p>
+<ul>
+<li>首先进入全局环境，全局执行上下文被创建并添加进栈中；</li>
+<li>每调用一个函数，该函数执行上下文会被添加进调用栈，并开始执行；</li>
+<li>如果正在调用栈中执行的 A 函数还调用了 B 函数，那么 B 函数也将会被添加进调用栈；</li>
+<li>一旦 B 函数被调用，便会立即执行；</li>
+<li>当前函数执行完毕后，JavaScript 解释器将其清出调用栈，继续执行当前执行环境下的剩余的代码。</li>
+</ul>
+<blockquote>
+<p>由此可见，JavaScript 代码执行过程中，函数调用栈栈底永远是全局执行上下文，栈顶永远是当前执行上下文。</p>
+</blockquote>
+<p>在不考虑全局执行上下文时，我们可以理解为刚开始的时候调用栈是空的，每当有函数被调用，相应的执行上下文都会被添加到调用栈中。执行完函数中相关代码后，该执行上下文又会自动被调用栈移除，最后调用栈又回到了空的状态（同样不考虑全局执行上下文）。</p>
+<p>由于栈的容量是有限制的，所以当我们没有合理调用函数的时候，可能会导致爆栈异常，此时控制台便会抛出错误（细节目前不是很明白）</p>
+<p>这样的一个函数调用栈结构，可以理解为 JavaScript 中同步任务的执行环境，同步任务也可以理解为 JavaScript 代码片段的执行。</p>
+<h5 id="那肯定就要问了，那你同步不是一条道嘛，这概念好弄的"><a href="#那肯定就要问了，那你同步不是一条道嘛，这概念好弄的" class="headerlink" title="那肯定就要问了，那你同步不是一条道嘛，这概念好弄的"></a>那肯定就要问了，那你同步不是一条道嘛，这概念好弄的</h5><p>同步任务的执行会阻塞主线程，也就是说，一个函数执行的时候不会被抢占，只有在它执行完毕之后，才会去执行任何其他的代码。这意味着如果我们一个任务执行的时间过长，浏览器就无法处理与用户的交互，例如点击或滚动。</p>
+<p>因此，我们还需要用到异步任务。</p>
+<h5 id="异步任务与回调队列"><a href="#异步任务与回调队列" class="headerlink" title="异步任务与回调队列"></a><strong>异步任务与回调队列</strong></h5><p>异步任务包括一些需要等待响应的任务，包括<u>用户交互、HTTP 请求、定时器</u>等。</p>
+<p>我们知道，I&#x2F;O 类型的任务会有较长的等待时间，对于这类无法立刻得到结果的事件，可以使用异步任务的方式。这个过程中 JavaScript 线程就不用处于等待状态，CPU 也可以处理其他任务。</p>
+<p>异步任务需要提供回调函数，当异步任务有了运行结果之后，该任务则会被添加到回调队列中，主线程在适当的时候会从回调队列中取出相应的回调函数并执行。</p>
+<p>这里提到的回调队列又是什么呢？</p>
+<p>实际上，JavaScript 在运行的时候，除了函数调用栈之外，还包含了一个待处理的回调队列。在回调队列中的都是已经有了运行结果的异步任务，每一个异步任务都会关联着一个回调函数。</p>
+<p>回调队列则遵循 FIFO（先进先出）的原则，JavaScript 执行代码过程中，会进行以下的处理：</p>
+<ul>
+<li>运行时，会从最先进入队列的任务开始，处理队列中的任务；</li>
+<li>被处理的任务会被移出队列，该任务的运行结果会作为输入参数，并调用与之关联的函数，此时会产生一个函数调用栈；</li>
+<li>函数会一直处理到调用栈再次为空，然后 Event Loop 将会处理队列中的下一个任务。</li>
+</ul>
+<p><strong>这里我们提到了 Event Loop，它主要是用来管理单线程的 JavaScript 中同步任务和异步任务的执行问题。</strong>只能说江江觉得这个Event Loop不是个好东西，经常考。下面进行Event loop的总结：</p>
+<p>学到了单线程的设计会存在阻塞问题（那是当然），为此 JavaScript 中任务被分为同步和异步任务。那么，同步任务和异步任务之间是按照什么顺序来执行的呢？下面这句话得记好：</p>
+<p><strong>JavaScript 有一个基于事件循环的并发模型，称为事件循环（Event Loop），它的设计解决了同步任务和异步任务的管理问题。</strong></p>
+<p>根据 JavaScript 运行环境的不同，Event Loop 也会被分成浏览器的 <code>Event Loop</code> 和 Node.js 中的 Event Loop。Node.js可以说是这个游戏比较高难的环节了。</p>
+<p>在浏览器里，每当一个被监听的事件发生时，事件监听器绑定的相关任务就会被添加进回调队列。通过事件产生的任务是异步任务，常见的事件任务包括：</p>
+<ul>
+<li><u>用户交互事件产生的事件任务，比如输入操作；</u></li>
+<li><u>计时器产生的事件任务，比如setTimeout；</u></li>
+<li><u>异步请求产生的事件任务，比如 HTTP 请求。</u></li>
+</ul>
+<p>我只能说宝子好好记住，狠狠加分~</p>
+<p><a target="_blank" rel="noopener" href="https://s.poetries.work/images/20210719145333.png">https://s.poetries.work/images/20210719145333.png</a></p>
+<p>如图，主线程运行的时候，会产生堆（heap）和栈（stack），其中堆为内存、栈为函数调用栈。我们能看到，Event Loop 负责执行代码、收集和处理事件以及执行队列中的子任务，具体包括以下过程</p>
+<ul>
+<li>JavaScript 有一个主线程和调用栈，所有的任务最终都会被放到调用栈等待主线程执行。</li>
+<li>同步任务会被放在调用栈中，按照顺序等待主线程依次执行。</li>
+<li>主线程之外存在一个回调队列，回调队列中的异步任务最终会在主线程中以调用栈的方式运行。</li>
+<li>同步任务都在主线程上执行，栈中代码在执行的时候会调用浏览器的 API，此时会产生一些异步任务。</li>
+<li>异步任务会在有了结果（比如被监听的事件发生时）后，将异步任务以及关联的回调函数放入回调队列中。</li>
+<li>调用栈中任务执行完毕后，此时主线程处于空闲状态，会从回调队列中获取任务进行处理。</li>
+</ul>
+<p>上述过程会不断重复，这就是 JavaScript 的运行机制，称为事件循环机制（Event Loop）。</p>
+<p>Event Loop 的设计会带来一些问题，比如setTimeout、setInterval的时间精确性。这两个方法会设置一个计时器，当计时器计时完成，需要执行回调函数，此时才把回调函数放入回调队列中。</p>
+<p>如果当回调函数放入队列时，假设队列中还有大量的回调函数在等待执行，此时就会造成任务执行时间不精确。</p>
+<p>要优化这个问题，可以使用系统时钟来补偿计时器的不准确性，从而提升精确度。举个例子，如果你的计时器会在回调时触发二次计时，可以在每次回调任务结束的时候，根据最初的系统时间和该任务的执行时间进行差值比较，来修正后续的计时器时间。</p>
+<h5 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h5><p>ok,现在写到这里，过会再接着写，其实概念不是很难理解，但是这个机制对于整个的学习我认为是比较重要的原理。</p>
+<p>其实如果我是面试官，这块可以问<strong>Setimeout，promise，async await的区别</strong>，什么事件循环啦什么宏任务啦，什么微任务啦都可以考到，搬一个八股：</p>
+<p>setTimoout 就在script标签执行结束后才会执行，属于宏任务队列<br>Promise 本身是同步任务，只有resove() ,then()等才会加入微任务队列<br>async 函数中在await关键字之前都是同步任务<br>计算时可以将async 转换成等价的promise去运算<br>事件循环执行顺讯 ：script宏任务—&gt; 同步任务（调用栈）–&gt; 优先微任务队列–&gt;页面是否渲染？–&gt;有微任务产生优先微任务否则宏任务</p>
+<p>祝所有人都好运，快快好起来吧~</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Jiang Jiang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/05/03/%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84JavaScript/">http://example.com/2023/05/03/%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84JavaScript/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">江江的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/05/02/%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC/" title="事件侦听"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">事件侦听</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jiang Jiang</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/agou1116"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Jiang Jiang's Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB%E4%BA%BA%E7%9A%84%E4%BB%BB%E5%8A%A1%E4%B9%8B%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84Javascript%E6%80%8E%E4%B9%88%E7%AE%A1%E7%90%86%E4%BB%BB%E5%8A%A1%EF%BC%88%E4%B8%80%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">主人的任务之单线程的Javascript怎么管理任务（一）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84JavaScript"><span class="toc-number">1.0.0.0.1.</span> <span class="toc-text">单线程的JavaScript</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%EF%BC%9F%E4%BB%80%E4%B9%88%E4%BB%BB%E5%8A%A1%EF%BC%9Fxx%E7%9A%84%E4%BB%BB%E5%8A%A1%E7%BD%A2%E4%BA%86"><span class="toc-number">1.0.0.0.2.</span> <span class="toc-text">任务？什么任务？xx的任务罢了</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E8%B0%83%E7%94%A8%E4%BB%BB%E5%8A%A1%E6%A0%88"><span class="toc-number">1.0.0.0.3.</span> <span class="toc-text">同步任务与调用任务栈</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%82%A3%E8%82%AF%E5%AE%9A%E5%B0%B1%E8%A6%81%E9%97%AE%E4%BA%86%EF%BC%8C%E9%82%A3%E4%BD%A0%E5%90%8C%E6%AD%A5%E4%B8%8D%E6%98%AF%E4%B8%80%E6%9D%A1%E9%81%93%E5%98%9B%EF%BC%8C%E8%BF%99%E6%A6%82%E5%BF%B5%E5%A5%BD%E5%BC%84%E7%9A%84"><span class="toc-number">1.0.0.0.4.</span> <span class="toc-text">那肯定就要问了，那你同步不是一条道嘛，这概念好弄的</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E5%9B%9E%E8%B0%83%E9%98%9F%E5%88%97"><span class="toc-number">1.0.0.0.5.</span> <span class="toc-text">异步任务与回调队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93%EF%BC%9A"><span class="toc-number">1.0.0.0.6.</span> <span class="toc-text">小结：</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/03/%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84JavaScript/" title="单线程的JavaScript">单线程的JavaScript</a><time datetime="2023-05-03T08:15:31.000Z" title="发表于 2023-05-03 16:15:31 16:15:31">2023-05-03 16:15:31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/02/%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC/" title="事件侦听">事件侦听</a><time datetime="2023-05-02T04:40:10.000Z" title="发表于 2023-05-02 12:40:10 12:40:10">2023-05-02 12:40:10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/02/%E8%AE%A1%E7%BD%91/" title="计网">计网</a><time datetime="2023-05-01T21:32:21.000Z" title="发表于 2023-05-02 05:32:21 05:32:21">2023-05-02 05:32:21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/01/%E9%93%BE%E6%8E%A5/" title="链接">链接</a><time datetime="2023-05-01T15:47:59.000Z" title="发表于 2023-05-01 23:47:59 23:47:59">2023-05-01 23:47:59</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/01/%E7%B2%BE%E5%BA%A6%E9%97%AE%E9%A2%98-0-1-0-2/" title="精度问题&amp;0.1+0.2">精度问题&amp;0.1+0.2</a><time datetime="2023-05-01T15:29:32.000Z" title="发表于 2023-05-01 23:29:32 23:29:32">2023-05-01 23:29:32</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Jiang Jiang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
