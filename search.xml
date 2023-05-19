@@ -8,7 +8,7 @@
       <link href="/2023/05/20/singleeast%E9%9D%A2%E8%AF%95/"/>
       <url>/2023/05/20/singleeast%E9%9D%A2%E8%AF%95/</url>
       
-        <content type="html"><![CDATA[<p>题目：</p><p>自我介绍</p><p>项目介绍（不共享屏幕）</p><p>1.简单介绍前端排列布局flex</p><p>2.flex常见属性 举例</p><p>3.flex：1与flex： 2的关系或区别（比例）</p><p>4.讲讲盒模型</p><p>5.场景：页面有很多盒子，有个盒子margin-left从正值变成了负值，会发生什么（讲了间距，讲了容器左侧溢出）</p><p>6.介绍事件冒泡（stopPropagation（））</p><p>7.阻止事件冒泡怎么做</p><p>8.什么叫事件委托（自己举了例子）</p><p>9.简单算法：判断回文数列</p><p>（说了反转比较，双指针，递归，面试官说数据结构你有想法吗，我说用栈输入外弹即可）</p><p>10.vue组件通信的方式（讲了寻常的以及eventbus，vuex，&amp;bus）</p><p>11.vue使用事件总线需要注意的方法</p><p>12.vue路由hash与history的区别</p><p>13.vue里hash会不会与锚点冲突</p><p>14.vue里history路由刷新怎么样，怎么解决这个问题</p><p>总结：面试45min，记错时间迟到了10min，问题难度基本如上，可能有遗漏，基本都回答出来，面试官很和蔼，问题有引导，并且对回答会表现肯定与夸奖，对职业规划和现状也给出了建议。</p><p>面试官反馈：singleeast一般tob给新人业务，toc给老手，技术栈是vue3，对学习能力有肯定，并且问我最近在看什么（flutter与typescript），css样式这块因为自己组织语言没有回答很快所以会让他感到需要加强（我说下去会回顾的）</p><p>后续：面试官与转推荐转换，看不懂</p><p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230520034542037.png" alt="image-20230520034542037"></p>]]></content>
+        <content type="html"><![CDATA[<p>题目：</p><p>自我介绍</p><p>项目介绍（不共享屏幕）</p><p>1.简单介绍前端排列布局flex</p><p>2.flex常见属性 举例</p><p>3.flex：1与flex： 2的关系或区别（比例）</p><p>4.讲讲盒模型</p><p>5.场景：页面有很多盒子，有个盒子margin-left从正值变成了负值，会发生什么（讲了间距，讲了容器左侧溢出）</p><p>6.介绍事件冒泡（stopPropagation（））</p><p>7.阻止事件冒泡怎么做</p><p>8.什么叫事件委托（自己举了例子）</p><p>9.简单算法：判断回文数列</p><p>（说了反转比较，双指针，递归，面试官说数据结构你有想法吗，我说用栈输入外弹即可）</p><p>10.vue组件通信的方式（讲了寻常的以及eventbus，vuex，&amp;bus）</p><p>11.vue使用事件总线需要注意的方法</p><p>12.vue路由hash与history的区别</p><p>13.vue里hash会不会与锚点冲突</p><p>14.vue里history路由刷新怎么样，怎么解决这个问题</p><p>总结：面试45min，记错时间迟到了10min，问题难度基本如上，可能有遗漏，基本都回答出来，面试官很和蔼，问题有引导，并且对回答会表现肯定与夸奖，对职业规划和现状也给出了建议。</p><p>面试官反馈：singleeast一般tob给新人业务，toc给老手，技术栈是vue3，对学习能力有肯定，并且问我最近在看什么（flutter与typescript），css样式这块因为自己组织语言没有回答很快所以会让他感到需要加强（我说下去会回顾的）</p><p>后续：面试官与转推荐转换，看不懂</p><p><img src="E:\个人博客hexo\source_posts\image-20230520034542037.png" alt="image-20230520034542037"></p>]]></content>
       
       
       
@@ -27,7 +27,7 @@
       <link href="/2023/05/16/%E7%9F%A5%E4%B9%8E%E4%B8%80%E9%9D%A2/"/>
       <url>/2023/05/16/%E7%9F%A5%E4%B9%8E%E4%B8%80%E9%9D%A2/</url>
       
-        <content type="html"><![CDATA[<p>5&#x2F;16 15:00 知乎一面（45min）</p><p>为什么接触前端</p><p>基本只问js与vue</p><p>js数据类型分类（基本引用，还说了区分原因：存储方式（？）导致复制过程不同）</p><p>介绍原型，原型链</p><p>手写继承，深拷贝（继承没写好，深拷贝对了）</p><p>vue用过什么（vuex &#x2F;vuerouter等等）</p><p>computed，watch（自己还答了区分）</p><p>用过react吗（无）</p><p>vue的生命周期介绍一个（8个，本来还想说vue3把周期合并了没说）</p><p>里面的mount是干嘛</p><p>其他以后再看录音回忆</p><p>反映说回答没问题，就是没有实习。。。现在开发和测试人很多，二面悬</p><h2 id="5-20更新"><a href="#5-20更新" class="headerlink" title="5.20更新"></a>5.20更新</h2><hr><p><img src="E:\个人博客hexo\source_posts\image-20230520035244833.png" alt="image-20230520035244833"></p>]]></content>
+        <content type="html"><![CDATA[<p>5&#x2F;16 15:00 知乎一面（45min）</p><p>为什么接触前端</p><p>基本只问js与vue</p><p>js数据类型分类（基本引用，还说了区分原因：存储方式（？）导致复制过程不同）</p><p>介绍原型，原型链</p><p>手写继承，深拷贝（继承没写好，深拷贝对了）</p><p>vue用过什么（vuex &#x2F;vuerouter等等）</p><p>computed，watch（自己还答了区分）</p><p>用过react吗（无）</p><p>vue的生命周期介绍一个（8个，本来还想说vue3把周期合并了没说）</p><p>里面的mount是干嘛</p><p>其他以后再看录音回忆</p><p>反映说回答没问题，就是没有实习。。。现在开发和测试人很多，二面悬</p><h2 id="5-20更新"><a href="#5-20更新" class="headerlink" title="5.20更新"></a>5.20更新</h2><p>岗位不匹配，凉</p><hr><p><img src="E:\个人博客hexo\source_posts\image-20230520035244833.png" alt="image-20230520035244833"></p>]]></content>
       
       
       
